@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Course Player — Edume Learning</title>
+<link rel="stylesheet" href="/css/styles.css">
+<style>
+  body { background:#0F0F0F; color:white; margin:0; }
+  .player-nav { background:#1A1A1A; border-bottom:1px solid rgba(255,255,255,0.08); padding:0 1.5rem; height:56px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; }
+  .p-nav-logo { display:flex; align-items:center; gap:8px; text-decoration:none; color:white; font-family:'Playfair Display',serif; font-weight:800; font-size:1.1rem; }
+  .p-nav-icon { width:28px; height:28px; border-radius:7px; background:var(--teal); display:flex; align-items:center; justify-content:center; font-size:0.85rem; font-weight:800; }
+  .player-layout { display:grid; grid-template-columns:1fr 320px; height:calc(100vh - 56px); }
+  .player-main { overflow-y:auto; background:#0F0F0F; }
+  .video-wrap { background:#000; position:relative; }
+  video { width:100%; display:block; max-height:62vh; background:#000; }
+  .vid-placeholder { aspect-ratio:16/9; max-height:62vh; background:#1A1A1A; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:1rem; color:rgba(255,255,255,0.35); font-size:0.9rem; }
+  .vid-placeholder .big-icon { font-size:3rem; }
+  .controls { background:#1A1A1A; padding:0.6rem 1rem; }
+  .prog-row { display:flex; align-items:center; gap:10px; margin-bottom:6px; }
+  .prog-track { flex:1; height:4px; background:rgba(255,255,255,0.15); border-radius:2px; cursor:pointer; position:relative; }
+  .prog-fill { height:100%; background:var(--teal-mid); border-radius:2px; pointer-events:none; }
+  .prog-dot { position:absolute; top:50%; right:-5px; transform:translateY(-50%); width:10px; height:10px; border-radius:50%; background:var(--teal-light); pointer-events:none; }
+  .t-label { font-size:0.7rem; color:rgba(255,255,255,0.5); min-width:40px; }
+  .ctrl-row { display:flex; align-items:center; gap:0.5rem; }
+  .cb { background:none; border:none; color:white; font-size:1.1rem; cursor:pointer; padding:4px 6px; border-radius:6px; transition:background 0.15s; }
+  .cb:hover { background:rgba(255,255,255,0.1); }
+  .vol { width:70px; accent-color:var(--teal-mid); cursor:pointer; }
+  .speed-sel { background:rgba(255,255,255,0.1); border:none; color:white; font-size:0.72rem; padding:3px 5px; border-radius:5px; cursor:pointer; font-family:'DM Sans'; }
+  .lesson-info-bar { padding:1.25rem 1.5rem; border-bottom:1px solid rgba(255,255,255,0.07); }
+  .lesson-title { font-family:'Playfair Display',serif; font-size:1.2rem; font-weight:700; margin-bottom:3px; }
+  .lesson-sub { font-size:0.78rem; color:rgba(255,255,255,0.45); }
+  .tabs { display:flex; border-bottom:1px solid rgba(255,255,255,0.07); padding:0 1.5rem; }
+  .tab { padding:0.65rem 0.9rem; font-size:0.82rem; font-weight:500; color:rgba(255,255,255,0.45); cursor:pointer; border-bottom:2px solid transparent; transition:all 0.2s; }
+  .tab.active { color:var(--teal-light); border-bottom-color:var(--teal-light); }
+  .tc { padding:1.5rem; display:none; }
+  .tc.active { display:block; }
+  .res-row { display:flex; align-items:center; gap:10px; padding:0.55rem 0; border-bottom:1px solid rgba(255,255,255,0.06); font-size:0.82rem; color:rgba(255,255,255,0.7); }
+  .res-row a { color:var(--teal-light); text-decoration:none; margin-left:auto; font-size:0.75rem; font-weight:600; }
+  /* SIDEBAR */
+  .p-sidebar { background:#1A1A1A; border-left:1px solid rgba(255,255,255,0.07); overflow-y:auto; display:flex; flex-direction:column; }
+  .sb-header { padding:1rem; border-bottom:1px solid rgba(255,255,255,0.07); flex-shrink:0; }
+  .sb-course-title { font-size:0.82rem; font-weight:600; color:white; line-height:1.3; margin-bottom:0.5rem; }
+  .sb-prog-track { height:3px; background:rgba(255,255,255,0.1); border-radius:2px; overflow:hidden; }
+  .sb-prog-fill { height:100%; background:var(--teal-mid); border-radius:2px; transition:width 0.5s; }
+  .sb-prog-label { font-size:0.68rem; color:rgba(255,255,255,0.35); margin-top:4px; }
+  .sb-mod-header { padding:0.65rem 1rem; font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:rgba(255,255,255,0.35); background:rgba(0,0,0,0.25); }
+  .sb-lesson { display:flex; align-items:center; gap:8px; padding:0.65rem 1rem; cursor:pointer; border-bottom:1px solid rgba(255,255,255,0.04); transition:background 0.15s; }
+  .sb-lesson:hover { background:rgba(255,255,255,0.04); }
+  .sb-lesson.active { background:rgba(29,158,117,0.12); border-left:2px solid var(--teal-mid); }
+  .sb-lesson.done .sl-ring { background:var(--teal-mid); border-color:var(--teal-mid); color:white; }
+  .sl-ring { width:20px; height:20px; border-radius:50%; border:1.5px solid rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; font-size:0.6rem; flex-shrink:0; }
+  .sl-t { font-size:0.78rem; color:rgba(255,255,255,0.65); flex:1; line-height:1.3; }
+  .sb-lesson.active .sl-t { color:white; font-weight:600; }
+  .sl-m { font-size:0.65rem; color:rgba(255,255,255,0.3); }
+  .mark-btn { margin:0.75rem; flex-shrink:0; padding:0.6rem; width:calc(100% - 1.5rem); border-radius:8px; background:var(--teal); color:white; border:none; font-family:'DM Sans'; font-weight:600; font-size:0.82rem; cursor:pointer; transition:all 0.2s; }
+  .mark-btn:hover:not(:disabled) { background:var(--teal-dark); }
+  .mark-btn:disabled { background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.35); cursor:default; }
+  @media(max-width:768px){ .player-layout{grid-template-columns:1fr;height:auto;} .p-sidebar{display:none;} }
+</style>
+</head>
+<body>
+
+<div class="player-nav">
+  <a href="/courses.html" class="p-nav-logo">
+    <div class="p-nav-icon">E</div>
+    Edume
+  </a>
+  <div id="nav-title" style="font-size:0.82rem;color:rgba(255,255,255,0.5);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:380px"></div>
+  <div style="display:flex;gap:0.75rem">
+    <a href="/student-dashboard.html" style="font-size:0.78rem;color:rgba(255,255,255,0.45);text-decoration:none">Dashboard</a>
+    <button onclick="signOut()" style="font-size:0.78rem;background:none;border:none;color:rgba(255,255,255,0.35);cursor:pointer">Sign out</button>
+  </div>
+</div>
+
+<div class="player-layout">
+
+  <!-- MAIN -->
+  <div class="player-main">
+    <div class="video-wrap">
+      <div class="vid-placeholder" id="vid-ph"><div class="big-icon">▶</div><div>Loading…</div></div>
+      <video id="vid" style="display:none" preload="metadata"
+        onended="onEnd()" ontimeupdate="onTick()" onloadedmetadata="onMeta()"
+        onplay="document.getElementById('pb').textContent='⏸'"
+        onpause="document.getElementById('pb').textContent='▶'">
+      </video>
+    </div>
+
+    <div class="controls" id="vid-ctrls" style="display:none">
+      <div class="prog-row">
+        <span class="t-label" id="tc">0:00</span>
+        <div class="prog-track" id="pt" onclick="seekTo(event)">
+          <div class="prog-fill" id="pf" style="width:0%"><div class="prog-dot"></div></div>
+        </div>
+        <span class="t-label" id="td" style="text-align:right">0:00</span>
+      </div>
+      <div class="ctrl-row">
+        <button class="cb" onclick="prevL()" title="Previous">⏮</button>
+        <button class="cb" id="pb" onclick="togglePlay()">▶</button>
+        <button class="cb" onclick="nextL()" title="Next">⏭</button>
+        <input type="range" class="vol" min="0" max="1" step="0.05" value="1" oninput="document.getElementById('vid').volume=this.value">
+        <select class="speed-sel" onchange="document.getElementById('vid').playbackRate=parseFloat(this.value)">
+          <option value="0.75">0.75×</option><option value="1" selected>1×</option>
+          <option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option>
+        </select>
+        <button class="cb" onclick="fs()" style="margin-left:auto">⛶</button>
+      </div>
+    </div>
+
+    <div class="lesson-info-bar">
+      <div class="lesson-title" id="lt">Loading…</div>
+      <div class="lesson-sub" id="ls"></div>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab(this,'ov')">Overview</div>
+      <div class="tab" onclick="switchTab(this,'res')">Resources</div>
+      <div class="tab" onclick="switchTab(this,'notes')">Notes</div>
+    </div>
+    <div class="tc active" id="tc-ov"><p style="font-size:0.85rem;color:rgba(255,255,255,0.55);line-height:1.7" id="l-desc">Select a lesson to begin.</p></div>
+    <div class="tc" id="tc-res"><div id="res-list" style="color:rgba(255,255,255,0.45);font-size:0.85rem">No resources for this lesson.</div></div>
+    <div class="tc" id="tc-notes">
+      <textarea id="notes-ta" style="width:100%;min-height:140px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:white;font-family:'DM Sans';font-size:0.85rem;padding:0.75rem;resize:vertical" placeholder="Take notes…"></textarea>
+      <button class="btn btn-primary" style="margin-top:0.5rem;font-size:0.8rem" onclick="saveNote()">Save Note</button>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="p-sidebar">
+    <button class="mark-btn" id="mark-btn" onclick="markComplete()">Mark as Complete</button>
+    <div class="sb-header">
+      <div class="sb-course-title" id="sb-title">Loading…</div>
+      <div class="sb-prog-track"><div class="sb-prog-fill" id="sb-pf" style="width:0%"></div></div>
+      <div class="sb-prog-label" id="sb-pl">0% complete</div>
+    </div>
+    <div id="sb-curriculum"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/js/supabase-client.js"></script>
+<script src="/js/ui.js"></script>
+<script>
+const params    = new URLSearchParams(location.search);
+const courseId  = params.get('course');
+const initLid   = params.get('lesson');
+const isPreview = params.get('preview')==='1';
+let user, allMods=[], allLessons=[], curLesson=null, doneIds=new Set();
+
+if (!courseId) location.href='/courses.html';
+
+async function init() {
+  user = await edumeDB.getCurrentUser();
+  if (!user && !isPreview) { location.href=`/login.html?next=${encodeURIComponent(location.href)}`; return; }
+
+  const [{ data:course},{data:mods},{data:prog}] = await Promise.all([
+    edumeDB.sb.from('courses').select('id,title').eq('id',courseId).single(),
+    edumeDB.sb.from('course_modules').select('*,course_lessons(*)').eq('course_id',courseId).order('sort_order').order('sort_order',{referencedTable:'course_lessons'}),
+    user ? edumeDB.sb.from('lesson_progress').select('lesson_id').eq('user_id',user.id).eq('course_id',courseId).eq('completed',true) : {data:[]},
+  ]);
+
+  if (!course) return;
+  document.getElementById('nav-title').textContent = course.title;
+  document.getElementById('sb-title').textContent  = course.title;
+  allMods    = mods||[];
+  allLessons = allMods.flatMap(m=>m.course_lessons||[]);
+  doneIds    = new Set((prog||[]).map(p=>p.lesson_id));
+
+  renderSidebar();
+  updateProg();
+  const start = initLid ? allLessons.find(l=>l.id===initLid) : allLessons[0];
+  if (start) loadLesson(start);
+}
+
+function renderSidebar() {
+  document.getElementById('sb-curriculum').innerHTML = allMods.map(m=>`
+    <div>
+      <div class="sb-mod-header">${m.title}</div>
+      ${(m.course_lessons||[]).map(l=>`
+        <div class="sb-lesson${doneIds.has(l.id)?' done':''}${l.id===curLesson?.id?' active':''}" id="sl-${l.id}" onclick='loadLesson(${JSON.stringify(l)})'>
+          <div class="sl-ring">${doneIds.has(l.id)?'✓':''}</div>
+          <div class="sl-t">${l.title}</div>
+          <div class="sl-m">${l.duration_min?l.duration_min+'m':''}</div>
+        </div>`).join('')}
+    </div>`).join('');
+}
+
+async function loadLesson(lesson) {
+  if (typeof lesson === 'string') lesson = JSON.parse(lesson);
+  curLesson = lesson;
+  document.getElementById('lt').textContent   = lesson.title;
+  document.getElementById('ls').textContent   = lesson.duration_min?`${lesson.duration_min} min`:'';
+  document.getElementById('l-desc').textContent = lesson.description||'Watch the video to learn this lesson.';
+
+  document.querySelectorAll('.sb-lesson').forEach(e=>e.classList.remove('active'));
+  document.getElementById(`sl-${lesson.id}`)?.classList.add('active');
+
+  const url = new URL(location.href);
+  url.searchParams.set('lesson',lesson.id); history.replaceState(null,'',url);
+
+  const isDone = doneIds.has(lesson.id);
+  const btn = document.getElementById('mark-btn');
+  btn.disabled = isDone; btn.textContent = isDone?'✓ Completed':'Mark as Complete';
+
+  // Video
+  const vid=document.getElementById('vid'), ph=document.getElementById('vid-ph'), ctrls=document.getElementById('vid-ctrls');
+  if (lesson.video_url) {
+    let src = lesson.video_url;
+    // Generate signed URL for private storage
+    try {
+      const pathMatch = lesson.video_url.match(/\/object\/(?:public|sign)\/([^?]+)/);
+      if (pathMatch) {
+        const parts = pathMatch[1].split('/');
+        const bucket = parts[0], filePath = parts.slice(1).join('/');
+        const {data:sd} = await edumeDB.sb.storage.from(bucket).createSignedUrl(filePath, 3600);
+        if (sd?.signedUrl) src = sd.signedUrl;
+      }
+    } catch(e){}
+    vid.src=src; vid.style.display='block'; ph.style.display='none'; ctrls.style.display='block';
+    document.getElementById('pb').textContent='▶';
+  } else {
+    vid.style.display='none'; ctrls.style.display='none'; ph.style.display='flex';
+    ph.innerHTML='<div class="big-icon">📄</div><div>No video for this lesson.</div>';
+  }
+
+  // Resources
+  const {data:res} = await edumeDB.sb.from('lesson_resources').select('*').eq('lesson_id',lesson.id);
+  document.getElementById('res-list').innerHTML = res?.length
+    ? res.map(r=>`<div class="res-row">📎 ${r.name}<a href="${r.url}" target="_blank">Download</a></div>`).join('')
+    : 'No resources for this lesson.';
+
+  // Notes
+  if (user) {
+    const {data:note} = await edumeDB.sb.from('lesson_notes').select('content').eq('user_id',user.id).eq('lesson_id',lesson.id).single().catch(()=>({data:null}));
+    document.getElementById('notes-ta').value = note?.content||'';
+  }
+}
+
+async function markComplete() {
+  if (!user||!curLesson) return;
+  const {error} = await edumeDB.sb.from('lesson_progress').upsert({user_id:user.id,course_id:courseId,lesson_id:curLesson.id,completed:true},{onConflict:'user_id,lesson_id'});
+  if (!error) {
+    doneIds.add(curLesson.id);
+    const el = document.getElementById(`sl-${curLesson.id}`);
+    el?.classList.add('done');
+    el?.querySelector('.sl-ring')&&(el.querySelector('.sl-ring').textContent='✓');
+    const btn=document.getElementById('mark-btn'); btn.disabled=true; btn.textContent='✓ Completed';
+    updateProg(); showToast('Lesson complete ✅','success');
+  }
+}
+
+function updateProg() {
+  const pct = allLessons.length?Math.round(doneIds.size/allLessons.length*100):0;
+  document.getElementById('sb-pf').style.width=pct+'%';
+  document.getElementById('sb-pl').textContent=`${pct}% (${doneIds.size}/${allLessons.length} lessons)`;
+  if (user) edumeDB.sb.from('enrollments').update({progress_percent:pct,status:pct===100?'completed':'active'}).eq('user_id',user.id).eq('course_id',courseId);
+}
+
+// Video controls
+function togglePlay(){const v=document.getElementById('vid'); v.paused?v.play():v.pause();}
+function seekTo(e){const v=document.getElementById('vid'),t=document.getElementById('pt'); if(v.duration) v.currentTime=(e.offsetX/t.offsetWidth)*v.duration;}
+function onTick(){const v=document.getElementById('vid'); if(!v.duration)return; const p=v.currentTime/v.duration*100; document.getElementById('pf').style.width=p+'%'; document.getElementById('tc').textContent=fmt(v.currentTime); if(p>90&&curLesson&&!doneIds.has(curLesson.id))markComplete();}
+function onMeta(){document.getElementById('td').textContent=fmt(document.getElementById('vid').duration); document.getElementById('vid-ctrls').style.display='block';}
+function fmt(s){if(!s||isNaN(s))return'0:00'; return`${Math.floor(s/60)}:${Math.floor(s%60).toString().padStart(2,'0')}`;}
+function onEnd(){markComplete(); setTimeout(nextL,1200);}
+function prevL(){if(!curLesson)return; const i=allLessons.findIndex(l=>l.id===curLesson.id); if(i>0)loadLesson(allLessons[i-1]);}
+async function nextL(){
+  if(!curLesson) return;
+  const i = allLessons.findIndex(l => l.id === curLesson.id);
+  if(i < allLessons.length - 1) {
+    loadLesson(allLessons[i+1]);
+  } else {
+    showToast('🎓 Course complete! Generating your certificate…', 'success', 4000);
+    await requestCertificate();
+  }
+}
+
+async function requestCertificate() {
+  try {
+    const user = await getCurrentUser();
+    if (!user) return;
+    const { data: { session } } = await sb.auth.getSession();
+    const resp = await fetch(SUPABASE_URL + '/functions/v1/generate-certificate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.access_token },
+      body: JSON.stringify({ user_id: user.id, course_id: courseId })
+    });
+    const data = await resp.json();
+    if (data.certificate_id) {
+      setTimeout(() => {
+        const banner = document.createElement('div');
+        banner.style.cssText = 'position:fixed;bottom:5rem;left:50%;transform:translateX(-50%);background:#085041;color:white;padding:1rem 2rem;border-radius:12px;display:flex;gap:1rem;align-items:center;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,0.3);';
+        banner.innerHTML = `<span style="font-size:1.5rem">🎓</span><div><div style="font-weight:700;margin-bottom:2px">Certificate Ready!</div><div style="font-size:0.82rem;opacity:0.8">Your certificate has been issued.</div></div><a href="certificate.html?id=${data.certificate_id}" style="background:#EF9F27;color:#1A1A17;padding:0.4rem 1rem;border-radius:8px;font-weight:700;text-decoration:none;white-space:nowrap;font-size:0.85rem;">Download →</a>`;
+        document.body.appendChild(banner);
+        setTimeout(() => banner.remove(), 12000);
+      }, 1500);
+    }
+  } catch(e) { console.error('Certificate error:', e); }
+}
+function fs(){const v=document.getElementById('vid'); document.fullscreenElement?document.exitFullscreen():v.requestFullscreen?.();}
+function switchTab(el,n){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); document.querySelectorAll('.tc').forEach(t=>t.classList.remove('active')); el.classList.add('active'); document.getElementById(`tc-${n}`)?.classList.add('active');}
+async function saveNote(){if(!user||!curLesson)return; const c=document.getElementById('notes-ta').value; await edumeDB.sb.from('lesson_notes').upsert({user_id:user.id,lesson_id:curLesson.id,content:c},{onConflict:'user_id,lesson_id'}); showToast('Note saved','success');}
+function signOut(){edumeDB.sb.auth.signOut().then(()=>location.href='/');}
+
+if (new URLSearchParams(location.search).get('enrolled')==='1') showToast('🎉 Payment successful! Welcome to the course.','success',5000);
+init();
+</script>
+</body>
+</html>

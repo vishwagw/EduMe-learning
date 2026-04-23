@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edume Learning — Sri Lanka's Premier Online Education Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal-dark: #085041;
+    --teal: #0F6E56;
+    --teal-mid: #1D9E75;
+    --teal-light: #5DCAA5;
+    --teal-pale: #E1F5EE;
+    --amber: #EF9F27;
+    --amber-dark: #BA7517;
+    --amber-pale: #FAEEDA;
+    --coral: #D85A30;
+    --coral-pale: #FAECE7;
+    --off-white: #FAFAF7;
+    --warm-white: #FFF9F4;
+    --ink: #1A1A17;
+    --ink-muted: #4A4A45;
+    --ink-faint: #888780;
+    --border: rgba(0,0,0,0.08);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--off-white);
+    color: var(--ink);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(255,255,255,0.96);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.45rem; font-weight: 800;
+    color: var(--teal);
+    text-decoration: none;
+  }
+  .nav-logo-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: var(--teal);
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 1.1rem; font-weight: 800;
+    font-family: 'Playfair Display', serif;
+  }
+  .nav-links {
+    display: flex; align-items: center; gap: 2rem;
+    list-style: none;
+  }
+  .nav-links a {
+    text-decoration: none; color: var(--ink-muted);
+    font-size: 0.9rem; font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--teal); }
+  .nav-actions { display: flex; align-items: center; gap: 0.75rem; }
+  .btn-outline {
+    padding: 0.45rem 1.2rem; border-radius: 8px;
+    border: 1.5px solid var(--teal); color: var(--teal);
+    background: transparent; font-family: 'DM Sans', sans-serif;
+    font-size: 0.875rem; font-weight: 500; cursor: pointer;
+    text-decoration: none; transition: all 0.2s;
+  }
+  .btn-outline:hover { background: var(--teal-pale); }
+  .btn-primary {
+    padding: 0.45rem 1.2rem; border-radius: 8px;
+    background: var(--teal); color: white;
+    border: none; font-family: 'DM Sans', sans-serif;
+    font-size: 0.875rem; font-weight: 500; cursor: pointer;
+    text-decoration: none; transition: all 0.2s;
+  }
+  .btn-primary:hover { background: var(--teal-dark); }
+  .lang-badge {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 0.8rem; color: var(--ink-faint);
+    border: 1px solid var(--border); border-radius: 20px;
+    padding: 4px 10px; cursor: pointer;
+  }
+
+  /* HERO */
+  .hero {
+    padding-top: 96px;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #F0FBF6 0%, #FFF9F0 60%, #FEF3E8 100%);
+    display: flex; align-items: center;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -80px; right: -80px;
+    width: 500px; height: 500px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(29,158,117,0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero::after {
+    content: '';
+    position: absolute; bottom: -100px; left: 10%;
+    width: 400px; height: 400px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(239,159,39,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-container {
+    max-width: 1200px; margin: 0 auto; padding: 0 2rem;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 4rem; align-items: center; width: 100%;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--teal-pale); color: var(--teal);
+    border-radius: 20px; padding: 6px 14px;
+    font-size: 0.82rem; font-weight: 600; margin-bottom: 1.25rem;
+    border: 1px solid rgba(15,110,86,0.2);
+  }
+  .hero-badge-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--teal-mid); animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity:1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.3); }
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 4vw, 3.5rem);
+    font-weight: 800; line-height: 1.15;
+    color: var(--ink); margin-bottom: 1.25rem;
+  }
+  .hero h1 span { color: var(--teal); position: relative; }
+  .hero h1 .accent { color: var(--amber-dark); }
+  .hero-desc {
+    font-size: 1.05rem; color: var(--ink-muted);
+    line-height: 1.7; margin-bottom: 2rem; max-width: 480px;
+  }
+  .hero-ctas { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+  .btn-hero {
+    padding: 0.8rem 1.75rem; border-radius: 10px;
+    font-size: 0.95rem; font-weight: 600;
+    cursor: pointer; text-decoration: none;
+    transition: all 0.2s; font-family: 'DM Sans', sans-serif;
+  }
+  .btn-hero-primary {
+    background: var(--teal); color: white; border: none;
+  }
+  .btn-hero-primary:hover { background: var(--teal-dark); transform: translateY(-1px); }
+  .btn-hero-secondary {
+    background: white; color: var(--ink);
+    border: 1.5px solid var(--border);
+  }
+  .btn-hero-secondary:hover { border-color: var(--teal); color: var(--teal); }
+  .hero-stats {
+    display: flex; gap: 2rem;
+  }
+  .hero-stat .num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem; font-weight: 700; color: var(--teal);
+  }
+  .hero-stat .label {
+    font-size: 0.78rem; color: var(--ink-faint); font-weight: 500;
+  }
+  .hero-stat-divider {
+    width: 1px; background: var(--border); align-self: stretch;
+  }
+
+  /* HERO VISUAL */
+  .hero-visual { position: relative; }
+  .hero-card-main {
+    background: white; border-radius: 20px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
+    overflow: hidden;
+  }
+  .course-thumbnail {
+    width: 100%; height: 200px;
+    background: linear-gradient(135deg, var(--teal) 0%, var(--teal-mid) 100%);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .course-thumbnail-pattern {
+    position: absolute; inset: 0;
+    background-image: repeating-linear-gradient(
+      45deg,
+      rgba(255,255,255,0.03) 0, rgba(255,255,255,0.03) 1px,
+      transparent 0, transparent 50%
+    );
+    background-size: 20px 20px;
+  }
+  .course-thumbnail-icon {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem; z-index: 1;
+  }
+  .play-btn {
+    position: absolute; bottom: 16px; right: 16px;
+    width: 42px; height: 42px; border-radius: 50%;
+    background: var(--amber); border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 1rem; box-shadow: 0 4px 12px rgba(239,159,39,0.4);
+  }
+  .course-badge {
+    position: absolute; top: 14px; left: 14px;
+    background: var(--amber); color: white;
+    border-radius: 6px; padding: 4px 10px;
+    font-size: 0.72rem; font-weight: 600;
+  }
+  .course-info { padding: 1.25rem; }
+  .course-info-top {
+    display: flex; justify-content: space-between;
+    align-items: flex-start; margin-bottom: 0.5rem;
+  }
+  .course-tag {
+    font-size: 0.72rem; font-weight: 600; color: var(--teal);
+    background: var(--teal-pale); padding: 3px 8px; border-radius: 4px;
+  }
+  .course-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem; font-weight: 700;
+    color: var(--ink); margin-bottom: 0.5rem;
+  }
+  .course-meta {
+    display: flex; gap: 1rem; font-size: 0.78rem;
+    color: var(--ink-faint); margin-bottom: 0.75rem;
+  }
+  .course-meta span { display: flex; align-items: center; gap: 4px; }
+  .stars { color: var(--amber); font-size: 0.75rem; }
+  .instructor-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-top: 0.75rem; border-top: 1px solid var(--border);
+  }
+  .instructor {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 0.8rem; color: var(--ink-muted);
+  }
+  .avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--teal); color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem; font-weight: 600; flex-shrink: 0;
+  }
+  .price-tag {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; font-weight: 700; color: var(--teal);
+  }
+  .price-tag .currency { font-size: 0.75rem; font-family: 'DM Sans', sans-serif; }
+
+  /* Floating cards */
+  .float-card {
+    position: absolute; background: white; border-radius: 12px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.1); padding: 0.75rem 1rem;
+    animation: floatY 4s ease-in-out infinite;
+  }
+  .float-card-1 { top: -20px; right: -20px; animation-delay: 0s; }
+  .float-card-2 { bottom: 60px; left: -30px; animation-delay: 1.5s; }
+  @keyframes floatY {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  .float-card .fc-label {
+    font-size: 0.7rem; color: var(--ink-faint); margin-bottom: 3px;
+  }
+  .float-card .fc-val {
+    font-size: 1rem; font-weight: 700; color: var(--ink);
+    font-family: 'Playfair Display', serif;
+  }
+  .float-card .fc-sub { font-size: 0.7rem; color: var(--teal); }
+  .fc-icon {
+    width: 32px; height: 32px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; margin-bottom: 4px;
+  }
+
+  /* LOGOS / TRUST */
+  .trust-section {
+    background: white; padding: 2rem 2rem;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .trust-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; align-items: center;
+    gap: 3rem; flex-wrap: wrap; justify-content: center;
+  }
+  .trust-label {
+    font-size: 0.78rem; color: var(--ink-faint);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    font-weight: 600; white-space: nowrap;
+  }
+  .trust-logos {
+    display: flex; align-items: center; gap: 2.5rem; flex-wrap: wrap;
+  }
+  .trust-logo {
+    font-size: 0.9rem; font-weight: 700; color: var(--ink-faint);
+    letter-spacing: 0.03em; opacity: 0.6;
+  }
+
+  /* SECTIONS */
+  section { padding: 5rem 2rem; }
+  .section-inner { max-width: 1200px; margin: 0 auto; }
+  .section-label {
+    font-size: 0.78rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--teal); margin-bottom: 0.75rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    font-weight: 700; color: var(--ink); line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+  .section-desc {
+    font-size: 1rem; color: var(--ink-muted); line-height: 1.7;
+    max-width: 560px;
+  }
+
+  /* STATS BAR */
+  .stats-bar {
+    background: var(--teal-dark); padding: 3.5rem 2rem;
+  }
+  .stats-bar-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+  }
+  .stat-item { text-align: center; }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem; font-weight: 700; color: white;
+    line-height: 1;
+  }
+  .stat-num span { color: var(--amber); }
+  .stat-label {
+    font-size: 0.85rem; color: rgba(255,255,255,0.65);
+    margin-top: 0.4rem; font-weight: 400;
+  }
+
+  /* CATEGORIES */
+  .categories-section { background: var(--warm-white); }
+  .categories-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1rem; margin-top: 2.5rem;
+  }
+  .cat-card {
+    background: white; border-radius: 14px;
+    border: 1.5px solid var(--border);
+    padding: 1.4rem 1rem; text-align: center;
+    cursor: pointer; transition: all 0.25s; text-decoration: none;
+    display: block;
+  }
+  .cat-card:hover {
+    border-color: var(--teal-light); transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(15,110,86,0.1);
+  }
+  .cat-icon {
+    width: 52px; height: 52px; border-radius: 14px;
+    margin: 0 auto 0.75rem;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+  }
+  .cat-name {
+    font-size: 0.85rem; font-weight: 600; color: var(--ink);
+    margin-bottom: 0.25rem;
+  }
+  .cat-count { font-size: 0.75rem; color: var(--ink-faint); }
+
+  /* COURSES GRID */
+  .courses-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem; margin-top: 2.5rem;
+  }
+  .course-card {
+    background: white; border-radius: 16px;
+    border: 1px solid var(--border); overflow: hidden;
+    transition: all 0.25s; cursor: pointer; text-decoration: none;
+    display: block;
+  }
+  .course-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+  }
+  .course-thumb {
+    height: 160px; display: flex; align-items: center; justify-content: center;
+    position: relative; font-size: 2.5rem;
+  }
+  .course-thumb-label {
+    position: absolute; top: 10px; left: 10px;
+    font-size: 0.7rem; font-weight: 600; padding: 3px 8px;
+    border-radius: 5px;
+  }
+  .cc-body { padding: 1rem; }
+  .cc-tag {
+    font-size: 0.7rem; font-weight: 600; color: var(--teal);
+    margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .cc-title {
+    font-size: 0.95rem; font-weight: 600; color: var(--ink);
+    margin-bottom: 0.5rem; line-height: 1.4;
+  }
+  .cc-rating {
+    display: flex; align-items: center; gap: 4px;
+    font-size: 0.78rem; margin-bottom: 0.5rem;
+  }
+  .cc-rating .num { font-weight: 600; color: var(--ink); }
+  .cc-rating .count { color: var(--ink-faint); }
+  .cc-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-top: 0.75rem; border-top: 1px solid var(--border);
+    margin-top: 0.5rem;
+  }
+  .cc-instructor {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 0.78rem; color: var(--ink-muted);
+  }
+  .cc-price { font-weight: 700; color: var(--teal); font-size: 0.95rem; }
+  .cc-price small {
+    font-size: 0.7rem; color: var(--ink-faint);
+    text-decoration: line-through; font-weight: 400; margin-right: 3px;
+  }
+
+  /* LIVE CLASSES */
+  .live-section {
+    background: linear-gradient(135deg, var(--teal-dark) 0%, #0A4535 100%);
+    position: relative; overflow: hidden;
+  }
+  .live-section::before {
+    content: '';
+    position: absolute; top: -100px; right: -100px;
+    width: 400px; height: 400px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(239,159,39,0.15) 0%, transparent 70%);
+  }
+  .live-section .section-title { color: white; }
+  .live-section .section-label { color: var(--teal-light); }
+  .live-section .section-desc { color: rgba(255,255,255,0.65); max-width: 600px; }
+  .live-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 2.5rem; margin-top: 3rem; align-items: center;
+  }
+  .live-cards { display: flex; flex-direction: column; gap: 1rem; }
+  .live-card {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 14px; padding: 1.2rem;
+    display: flex; gap: 1rem; align-items: flex-start;
+    transition: all 0.25s;
+  }
+  .live-card:hover { background: rgba(255,255,255,0.11); }
+  .live-card-icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; flex-shrink: 0;
+  }
+  .live-card-body { flex: 1; }
+  .live-card-title {
+    font-size: 0.9rem; font-weight: 600; color: white;
+    margin-bottom: 0.25rem;
+  }
+  .live-card-desc { font-size: 0.78rem; color: rgba(255,255,255,0.6); }
+  .live-card-badge {
+    font-size: 0.68rem; font-weight: 700; padding: 3px 8px;
+    border-radius: 20px; margin-top: 0.4rem; display: inline-block;
+  }
+  .badge-zoom { background: rgba(45,140,255,0.2); color: #7BB8FF; }
+  .badge-teams { background: rgba(100,80,255,0.2); color: #B5A8FF; }
+  .badge-live { background: rgba(239,159,39,0.2); color: #FACD75; }
+
+  .live-visual {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px; padding: 1.5rem; overflow: hidden;
+    position: relative;
+  }
+  .live-class-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 1.25rem;
+  }
+  .live-dot {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 0.75rem; font-weight: 600; color: var(--teal-light);
+  }
+  .live-dot::before {
+    content: ''; width: 8px; height: 8px; border-radius: 50%;
+    background: #FF4444; animation: pulse 1.5s infinite;
+    box-shadow: 0 0 6px rgba(255,68,68,0.6);
+  }
+  .live-class-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem; font-weight: 700; color: white;
+    margin-bottom: 0.25rem;
+  }
+  .live-class-sub { font-size: 0.78rem; color: rgba(255,255,255,0.55); }
+  .ticket-box {
+    background: rgba(255,255,255,0.08); border-radius: 12px;
+    padding: 1rem; margin-top: 1rem;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .ticket-row {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 0.5rem;
+  }
+  .ticket-label { font-size: 0.78rem; color: rgba(255,255,255,0.55); }
+  .ticket-val { font-size: 0.85rem; font-weight: 600; color: white; }
+  .ticket-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem; font-weight: 700; color: var(--amber);
+    margin-top: 0.25rem;
+  }
+  .ticket-price small {
+    font-size: 0.78rem; font-family: 'DM Sans'; color: rgba(255,255,255,0.5);
+    font-weight: 400;
+  }
+  .btn-ticket {
+    width: 100%; margin-top: 0.75rem; padding: 0.7rem;
+    background: var(--amber); color: var(--ink); border: none;
+    border-radius: 10px; font-family: 'DM Sans', sans-serif;
+    font-weight: 700; font-size: 0.85rem; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-ticket:hover { background: #EF9F27; transform: translateY(-1px); }
+
+  /* HOW IT WORKS */
+  .how-section { background: var(--off-white); }
+  .how-tabs {
+    display: flex; gap: 0.5rem; margin-bottom: 3rem;
+    background: white; border: 1px solid var(--border);
+    border-radius: 12px; padding: 5px; width: fit-content;
+  }
+  .how-tab {
+    padding: 0.5rem 1.2rem; border-radius: 8px;
+    border: none; background: transparent;
+    font-family: 'DM Sans'; font-size: 0.875rem; font-weight: 500;
+    color: var(--ink-muted); cursor: pointer; transition: all 0.2s;
+  }
+  .how-tab.active { background: var(--teal); color: white; }
+  .how-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .how-step {
+    background: white; border-radius: 16px;
+    border: 1.5px solid var(--border); padding: 1.5rem;
+    position: relative;
+  }
+  .how-step-num {
+    position: absolute; top: -12px; left: 20px;
+    background: var(--teal); color: white;
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; font-weight: 700;
+  }
+  .how-step-icon {
+    font-size: 2rem; margin-bottom: 0.75rem;
+    margin-top: 0.25rem;
+  }
+  .how-step-title {
+    font-size: 0.95rem; font-weight: 700; color: var(--ink);
+    margin-bottom: 0.4rem;
+  }
+  .how-step-desc { font-size: 0.82rem; color: var(--ink-muted); line-height: 1.6; }
+
+  /* TEACH WITH US */
+  .teach-section {
+    background: linear-gradient(135deg, var(--amber-pale) 0%, #FFFBF2 100%);
+  }
+  .teach-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 4rem; align-items: center; margin-top: 3rem;
+  }
+  .teach-benefits { display: flex; flex-direction: column; gap: 1.2rem; }
+  .teach-benefit {
+    display: flex; gap: 1rem; align-items: flex-start;
+  }
+  .benefit-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: white; border: 1.5px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; flex-shrink: 0;
+  }
+  .benefit-title {
+    font-size: 0.9rem; font-weight: 600; color: var(--ink);
+    margin-bottom: 0.2rem;
+  }
+  .benefit-desc { font-size: 0.8rem; color: var(--ink-muted); line-height: 1.5; }
+  .teach-visual {
+    background: white; border-radius: 20px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.07);
+    padding: 1.5rem; border: 1px solid var(--border);
+  }
+  .earnings-preview {
+    background: var(--teal-pale); border-radius: 12px;
+    padding: 1.25rem; margin-bottom: 1rem;
+  }
+  .earnings-label {
+    font-size: 0.75rem; color: var(--teal); font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 0.25rem;
+  }
+  .earnings-amount {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem; font-weight: 700; color: var(--teal-dark);
+  }
+  .earnings-amount small {
+    font-size: 0.8rem; font-family: 'DM Sans'; color: var(--teal);
+    font-weight: 500;
+  }
+  .earnings-bar { margin-top: 0.75rem; }
+  .bar-track {
+    height: 6px; background: rgba(15,110,86,0.15); border-radius: 3px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%; background: var(--teal-mid); border-radius: 3px;
+    transition: width 1s ease;
+  }
+  .bar-label {
+    display: flex; justify-content: space-between;
+    font-size: 0.7rem; color: var(--ink-faint); margin-top: 4px;
+  }
+  .revenue-breakdown {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;
+    margin-top: 1rem;
+  }
+  .rev-item {
+    background: var(--off-white); border-radius: 10px;
+    padding: 0.75rem; text-align: center;
+  }
+  .rev-num {
+    font-size: 1.1rem; font-weight: 700; color: var(--teal);
+    font-family: 'Playfair Display', serif;
+  }
+  .rev-label { font-size: 0.7rem; color: var(--ink-faint); margin-top: 2px; }
+  .btn-teach {
+    width: 100%; margin-top: 1.25rem; padding: 0.9rem;
+    background: var(--amber); color: var(--ink);
+    border: none; border-radius: 12px;
+    font-family: 'DM Sans'; font-weight: 700; font-size: 0.95rem;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .btn-teach:hover { background: var(--amber-dark); color: white; }
+
+  /* TESTIMONIALS */
+  .testimonials-section { background: white; }
+  .testimonials-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem; margin-top: 2.5rem;
+  }
+  .testimonial-card {
+    background: var(--off-white); border-radius: 16px;
+    border: 1px solid var(--border); padding: 1.5rem;
+  }
+  .t-stars { color: var(--amber); font-size: 0.9rem; margin-bottom: 0.75rem; }
+  .t-text {
+    font-size: 0.875rem; color: var(--ink-muted);
+    line-height: 1.7; margin-bottom: 1.25rem;
+    font-style: italic;
+  }
+  .t-author {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .t-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; font-weight: 700; color: white; flex-shrink: 0;
+  }
+  .t-name { font-size: 0.85rem; font-weight: 600; color: var(--ink); }
+  .t-role { font-size: 0.75rem; color: var(--ink-faint); }
+
+  /* PRICING */
+  .pricing-section { background: var(--warm-white); }
+  .pricing-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem; margin-top: 2.5rem;
+  }
+  .pricing-card {
+    background: white; border-radius: 20px;
+    border: 1.5px solid var(--border); padding: 2rem;
+    transition: all 0.3s;
+  }
+  .pricing-card:hover { transform: translateY(-4px); }
+  .pricing-card.featured {
+    border-color: var(--teal); position: relative;
+    box-shadow: 0 8px 32px rgba(15,110,86,0.12);
+  }
+  .featured-badge {
+    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+    background: var(--teal); color: white;
+    padding: 4px 16px; border-radius: 20px;
+    font-size: 0.72rem; font-weight: 700; white-space: nowrap;
+  }
+  .p-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+  .p-name {
+    font-size: 0.8rem; font-weight: 700; color: var(--ink-faint);
+    text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.25rem;
+  }
+  .p-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem; font-weight: 700; color: var(--ink);
+    margin-bottom: 0.25rem; line-height: 1;
+  }
+  .p-price span { font-size: 1rem; font-family: 'DM Sans'; font-weight: 500; }
+  .p-period { font-size: 0.78rem; color: var(--ink-faint); margin-bottom: 1.25rem; }
+  .p-features { list-style: none; margin-bottom: 1.5rem; }
+  .p-features li {
+    font-size: 0.85rem; color: var(--ink-muted);
+    padding: 0.35rem 0; display: flex; gap: 8px; align-items: flex-start;
+  }
+  .p-features li::before {
+    content: '✓'; color: var(--teal); font-weight: 700;
+    flex-shrink: 0; margin-top: 1px;
+  }
+  .btn-plan {
+    width: 100%; padding: 0.8rem; border-radius: 10px;
+    font-family: 'DM Sans'; font-weight: 600; font-size: 0.9rem;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .btn-plan-outline {
+    background: transparent; border: 1.5px solid var(--teal); color: var(--teal);
+  }
+  .btn-plan-outline:hover { background: var(--teal-pale); }
+  .btn-plan-filled { background: var(--teal); color: white; border: none; }
+  .btn-plan-filled:hover { background: var(--teal-dark); }
+
+  /* CTA */
+  .cta-section {
+    background: var(--teal-dark); text-align: center;
+    padding: 5rem 2rem; position: relative; overflow: hidden;
+  }
+  .cta-section::before {
+    content: ''; position: absolute;
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 600px; height: 600px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(239,159,39,0.1) 0%, transparent 70%);
+  }
+  .cta-section .section-title { color: white; }
+  .cta-desc {
+    color: rgba(255,255,255,0.65); font-size: 1rem;
+    margin-bottom: 2rem; max-width: 500px; margin-left: auto; margin-right: auto;
+  }
+  .cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn-cta-primary {
+    padding: 0.9rem 2rem; border-radius: 12px;
+    background: var(--amber); color: var(--ink);
+    border: none; font-family: 'DM Sans'; font-weight: 700; font-size: 0.95rem;
+    cursor: pointer; transition: all 0.2s; text-decoration: none;
+    display: inline-block;
+  }
+  .btn-cta-primary:hover { background: #EF9F27; transform: translateY(-2px); }
+  .btn-cta-outline {
+    padding: 0.9rem 2rem; border-radius: 12px;
+    background: transparent; color: white;
+    border: 1.5px solid rgba(255,255,255,0.3);
+    font-family: 'DM Sans'; font-weight: 600; font-size: 0.95rem;
+    cursor: pointer; transition: all 0.2s; text-decoration: none;
+    display: inline-block;
+  }
+  .btn-cta-outline:hover { border-color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.05); }
+
+  /* FOOTER */
+  footer {
+    background: #0D0D0B; color: rgba(255,255,255,0.65);
+    padding: 4rem 2rem 2rem;
+  }
+  .footer-inner {
+    max-width: 1200px; margin: 0 auto;
+  }
+  .footer-top {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 3rem; margin-bottom: 3rem;
+  }
+  .footer-brand { }
+  .footer-logo {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem; font-weight: 800; color: white;
+    text-decoration: none; margin-bottom: 1rem;
+  }
+  .footer-desc { font-size: 0.85rem; line-height: 1.7; max-width: 280px; }
+  .footer-payments {
+    display: flex; gap: 8px; margin-top: 1rem; flex-wrap: wrap;
+  }
+  .payment-badge {
+    background: rgba(255,255,255,0.1); border-radius: 6px;
+    padding: 4px 10px; font-size: 0.72rem; font-weight: 600;
+    color: rgba(255,255,255,0.7);
+  }
+  .footer-col h4 {
+    font-size: 0.8rem; font-weight: 700; color: white;
+    text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 1rem;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 0.5rem; }
+  .footer-col ul li a {
+    font-size: 0.85rem; color: rgba(255,255,255,0.55);
+    text-decoration: none; transition: color 0.2s;
+  }
+  .footer-col ul li a:hover { color: var(--teal-light); }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 1.5rem;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 1rem;
+  }
+  .footer-bottom p { font-size: 0.78rem; }
+  .footer-langs { display: flex; gap: 0.75rem; }
+  .lang-btn {
+    font-size: 0.75rem; color: rgba(255,255,255,0.45);
+    background: none; border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px; padding: 3px 10px; cursor: pointer;
+    transition: all 0.2s; font-family: 'DM Sans';
+  }
+  .lang-btn:hover, .lang-btn.active { color: white; border-color: var(--teal-light); }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    nav { padding: 0 1rem; }
+    .nav-links, .lang-badge { display: none; }
+    .hero-container { grid-template-columns: 1fr; gap: 2rem; padding-top: 1rem; }
+    .hero-visual { order: -1; }
+    .float-card-1, .float-card-2 { display: none; }
+    .stats-bar-inner { grid-template-columns: repeat(2, 1fr); }
+    .how-grid, .teach-grid, .testimonials-grid, .pricing-grid {
+      grid-template-columns: 1fr;
+    }
+    .live-grid { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+    .hero-stats { gap: 1rem; flex-wrap: wrap; }
+  }
+
+  /* ANIMATIONS */
+  .fade-up {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-icon">E</div>
+    Edume
+  </a>
+  <ul class="nav-links">
+    <li><a href="#courses">Courses</a></li>
+    <li><a href="#live">Live Classes</a></li>
+    <li><a href="#teach">Teach</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-badge">🇱🇰 EN | සිං | தமி</div>
+    <a href="#" class="btn-outline">Log in</a>
+    <a href="#" class="btn-primary">Get Started</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-container">
+    <div>
+      <div class="hero-badge">
+        <div class="hero-badge-dot"></div>
+        Sri Lanka's #1 Online Learning Platform
+      </div>
+      <h1>
+        Learn, Grow &<br>
+        <span>Succeed</span> in<br>
+        <span class="accent">Your Language</span>
+      </h1>
+      <p class="hero-desc">
+        Join thousands of Sri Lankan students and teachers. Learn from local experts in Sinhala, Tamil, or English — at your own pace or in live interactive classes.
+      </p>
+      <div class="hero-ctas">
+        <a href="#courses" class="btn-hero btn-hero-primary">Explore Courses</a>
+        <a href="#teach" class="btn-hero btn-hero-secondary">Start Teaching →</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="num">25,000+</div>
+          <div class="label">Active Students</div>
+        </div>
+        <div class="hero-stat-divider"></div>
+        <div class="hero-stat">
+          <div class="num">1,200+</div>
+          <div class="label">Courses</div>
+        </div>
+        <div class="hero-stat-divider"></div>
+        <div class="hero-stat">
+          <div class="num">450+</div>
+          <div class="label">Instructors</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="hero-card-main">
+        <div class="course-thumbnail">
+          <div class="course-thumbnail-pattern"></div>
+          <div class="course-thumbnail-icon">📊</div>
+          <div class="course-badge">BESTSELLER</div>
+          <button class="play-btn">▶</button>
+        </div>
+        <div class="course-info">
+          <div class="course-info-top">
+            <span class="course-tag">Data Science</span>
+            <div class="stars">★★★★★</div>
+          </div>
+          <div class="course-title">Python & Data Science — Sinhala Complete Guide</div>
+          <div class="course-meta">
+            <span>⏱ 42 hours</span>
+            <span>📁 18 modules</span>
+            <span>🎓 Certificate</span>
+          </div>
+          <div class="instructor-row">
+            <div class="instructor">
+              <div class="avatar">KP</div>
+              Kasun Perera
+            </div>
+            <div class="price-tag"><span class="currency">LKR </span>4,900</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="float-card float-card-1">
+        <div class="fc-icon" style="background:#E1F5EE; font-size:1rem;">🎉</div>
+        <div class="fc-label">New enrollment</div>
+        <div class="fc-val">2 min ago</div>
+        <div class="fc-sub">Dilani joined Python Course</div>
+      </div>
+
+      <div class="float-card float-card-2">
+        <div class="fc-label">This month</div>
+        <div class="fc-val" style="color:var(--teal)">LKR 82,400</div>
+        <div class="fc-sub">💰 Kasun's earnings</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<div class="trust-section">
+  <div class="trust-inner">
+    <span class="trust-label">Trusted by learners from</span>
+    <div class="trust-logos">
+      <span class="trust-logo">University of Colombo</span>
+      <span class="trust-logo">Dialog Axiata</span>
+      <span class="trust-logo">John Keells</span>
+      <span class="trust-logo">Virtusa</span>
+      <span class="trust-logo">MAS Holdings</span>
+      <span class="trust-logo">Hayleys</span>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stats-bar-inner">
+    <div class="stat-item fade-up">
+      <div class="stat-num">25<span>K+</span></div>
+      <div class="stat-label">Students Enrolled</div>
+    </div>
+    <div class="stat-item fade-up">
+      <div class="stat-num">1,200<span>+</span></div>
+      <div class="stat-label">Online Courses</div>
+    </div>
+    <div class="stat-item fade-up">
+      <div class="stat-num">450<span>+</span></div>
+      <div class="stat-label">Expert Instructors</div>
+    </div>
+    <div class="stat-item fade-up">
+      <div class="stat-num">98<span>%</span></div>
+      <div class="stat-label">Satisfaction Rate</div>
+    </div>
+  </div>
+</div>
+
+<!-- CATEGORIES -->
+<section class="categories-section" id="courses">
+  <div class="section-inner">
+    <p class="section-label">Browse by Subject</p>
+    <h2 class="section-title">Explore Top Categories</h2>
+    <p class="section-desc">From A/L subjects to professional skills — find the course that fits your career goals.</p>
+    <div class="categories-grid">
+      <a href="#" class="cat-card">
+        <div class="cat-icon" style="background:#E1F5EE">💻</div>
+        <div class="cat-name">IT & Programming</div>
+        <div class="cat-count">320 courses</div>
+      </a>
+      <a href="#" class="cat-card">
+        <div class="cat-icon" style="background:#FAEEDA">📐</div>
+        <div class="cat-name">Mathematics</div>
+        <div class="cat-count">180 courses</div>
+      </a>
+      <a href="#" class="cat-card">
+        <div class="cat-icon" style="background:#FAECE7">🧪</div>
+        <div class="cat-name">Science</div>
+        <div class="cat-count">145 courses</div>
+      </a>
+      <a href="#" class="cat-card">
+        <div class="cat-icon" style="background:#E6F1FB">💼</div>
+        <div class="cat-name">Business & Finance</div>
+        <div class="cat-count">210 courses</div>
+      </a>
+      <a href="#" class="cat-card">
+        <div class="cat-icon" style="background:#EEEDFE">🌐</div>
+        <div class="cat-name">Languages</div>
+        <div class="cat-count">95 courses</div>
+      </a>
+      <a href="#" class="cat-card">
+        <div class="cat-icon" style="background:#EAF3DE">📈</div>
+        <div class="cat-name">Digital Marketing</div>
+        <div class="cat-count">88 courses</div>
+      </a>
+      <a href="#" class="cat-card">
+        <div class="cat-icon" style="background:#FBEAF0">🎨</div>
+        <div class="cat-name">Design & Creative</div>
+        <div class="cat-count">120 courses</div>
+      </a>
+      <a href="#" class="cat-card">
+        <div class="cat-icon" style="background:#E1F5EE">⚕️</div>
+        <div class="cat-name">Healthcare</div>
+        <div class="cat-count">76 courses</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED COURSES -->
+<section style="background: var(--off-white);">
+  <div class="section-inner">
+    <p class="section-label">Featured</p>
+    <div style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:1rem; margin-bottom:2.5rem;">
+      <h2 class="section-title" style="margin:0">Top Courses This Week</h2>
+      <a href="#" style="color:var(--teal); font-size:0.875rem; font-weight:600; text-decoration:none;">View all courses →</a>
+    </div>
+    <div class="courses-grid">
+      <a href="#" class="course-card">
+        <div class="course-thumb" style="background:linear-gradient(135deg,#E1F5EE,#9FE1CB)">
+          💻
+          <span class="course-thumb-label" style="background:var(--teal);color:white">BESTSELLER</span>
+        </div>
+        <div class="cc-body">
+          <div class="cc-tag">Web Development</div>
+          <div class="cc-title">Full Stack Web Dev with React & Node — Sinhala</div>
+          <div class="cc-rating">
+            <span class="stars">★★★★★</span>
+            <span class="num">4.9</span>
+            <span class="count">(1,842)</span>
+          </div>
+          <div class="cc-footer">
+            <div class="cc-instructor">
+              <div class="avatar" style="width:22px;height:22px;font-size:0.6rem">RP</div>
+              Ruwan P.
+            </div>
+            <div class="cc-price"><small>LKR 7,800</small> LKR 3,900</div>
+          </div>
+        </div>
+      </a>
+
+      <a href="#" class="course-card">
+        <div class="course-thumb" style="background:linear-gradient(135deg,#FAEEDA,#FAC775)">
+          📊
+          <span class="course-thumb-label" style="background:var(--amber-dark);color:white">NEW</span>
+        </div>
+        <div class="cc-body">
+          <div class="cc-tag">Data Science</div>
+          <div class="cc-title">Data Analytics with Python — Complete Tamil Guide</div>
+          <div class="cc-rating">
+            <span class="stars">★★★★☆</span>
+            <span class="num">4.7</span>
+            <span class="count">(634)</span>
+          </div>
+          <div class="cc-footer">
+            <div class="cc-instructor">
+              <div class="avatar" style="width:22px;height:22px;font-size:0.6rem;background:#BA7517">TK</div>
+              Thilak K.
+            </div>
+            <div class="cc-price">LKR 4,500</div>
+          </div>
+        </div>
+      </a>
+
+      <a href="#" class="course-card">
+        <div class="course-thumb" style="background:linear-gradient(135deg,#E6F1FB,#B5D4F4)">
+          💼
+          <span class="course-thumb-label" style="background:#185FA5;color:white">HOT</span>
+        </div>
+        <div class="cc-body">
+          <div class="cc-tag">Business</div>
+          <div class="cc-title">Accounting & AAT Sri Lanka — Exam Prep Course</div>
+          <div class="cc-rating">
+            <span class="stars">★★★★★</span>
+            <span class="num">4.8</span>
+            <span class="count">(921)</span>
+          </div>
+          <div class="cc-footer">
+            <div class="cc-instructor">
+              <div class="avatar" style="width:22px;height:22px;font-size:0.6rem;background:#185FA5">NF</div>
+              Nimali F.
+            </div>
+            <div class="cc-price"><small>LKR 5,200</small> LKR 2,800</div>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE CLASSES -->
+<section class="live-section" id="live">
+  <div class="section-inner" style="position:relative;z-index:1">
+    <p class="section-label">Live Interactive</p>
+    <h2 class="section-title">Learn Live with Zoom & MS Teams</h2>
+    <p class="section-desc">Buy monthly tickets to attend live online classes directly with your teacher. Real-time Q&A, doubt clearing, and recorded replays included.</p>
+
+    <div class="live-grid">
+      <div class="live-cards">
+        <div class="live-card">
+          <div class="live-card-icon" style="background:rgba(45,140,255,0.15)">📹</div>
+          <div class="live-card-body">
+            <div class="live-card-title">Zoom & MS Teams Classes</div>
+            <div class="live-card-desc">Teachers host classes on their preferred platform. Students join with one-click access links.</div>
+            <span class="live-card-badge badge-zoom">Zoom</span>
+            <span class="live-card-badge badge-teams" style="margin-left:4px">MS Teams</span>
+          </div>
+        </div>
+        <div class="live-card">
+          <div class="live-card-icon" style="background:rgba(239,159,39,0.15)">🎟️</div>
+          <div class="live-card-body">
+            <div class="live-card-title">Monthly Ticket Subscription</div>
+            <div class="live-card-desc">Pay once a month and attend all scheduled live sessions. Cancel anytime.</div>
+            <span class="live-card-badge badge-live">Monthly Plan</span>
+          </div>
+        </div>
+        <div class="live-card">
+          <div class="live-card-icon" style="background:rgba(93,202,165,0.15)">🎬</div>
+          <div class="live-card-body">
+            <div class="live-card-title">Recorded Replays</div>
+            <div class="live-card-desc">Missed a session? All classes are recorded and available for ticket holders to watch anytime.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="live-visual">
+        <div class="live-class-header">
+          <div>
+            <div class="live-class-title">A/L Combined Maths — Live Class</div>
+            <div class="live-class-sub">by Samantha Bandara · Every Sat & Sun 9 AM</div>
+          </div>
+          <span class="live-dot">LIVE</span>
+        </div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:1rem;">
+          <span class="live-card-badge badge-zoom" style="font-size:0.7rem">Zoom Meeting</span>
+          <span style="background:rgba(93,202,165,0.15);color:#5DCAA5;font-size:0.7rem;font-weight:600;padding:3px 8px;border-radius:20px">148 enrolled</span>
+          <span style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.6);font-size:0.7rem;padding:3px 8px;border-radius:20px">2hrs / session</span>
+        </div>
+        <div class="ticket-box">
+          <div class="ticket-row">
+            <span class="ticket-label">Plan</span>
+            <span class="ticket-val">Monthly Ticket</span>
+          </div>
+          <div class="ticket-row">
+            <span class="ticket-label">Sessions</span>
+            <span class="ticket-val">8–10 per month</span>
+          </div>
+          <div class="ticket-row">
+            <span class="ticket-label">Access</span>
+            <span class="ticket-val">Live + Recordings</span>
+          </div>
+          <div class="ticket-price">LKR 1,500 <small>/ month</small></div>
+          <button class="btn-ticket">🎟 Buy Monthly Ticket</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section" id="how">
+  <div class="section-inner">
+    <p class="section-label">Simple Process</p>
+    <h2 class="section-title">How Edume Works</h2>
+    <div class="how-tabs">
+      <button class="how-tab active" onclick="switchTab(this, 'learner')">For Learners</button>
+      <button class="how-tab" onclick="switchTab(this, 'teacher')">For Teachers</button>
+    </div>
+
+    <div id="learner-steps" class="how-grid">
+      <div class="how-step">
+        <div class="how-step-num">1</div>
+        <div class="how-step-icon">🔍</div>
+        <div class="how-step-title">Browse & Choose</div>
+        <div class="how-step-desc">Search from 1,200+ courses in Sinhala, Tamil, or English. Filter by subject, level, price, or instructor rating.</div>
+      </div>
+      <div class="how-step">
+        <div class="how-step-num">2</div>
+        <div class="how-step-icon">💳</div>
+        <div class="how-step-title">Pay Securely</div>
+        <div class="how-step-desc">Pay via card, bank transfer, or mobile payment (Dialog, Mobitel). All transactions are secured with SSL encryption.</div>
+      </div>
+      <div class="how-step">
+        <div class="how-step-num">3</div>
+        <div class="how-step-icon">🎓</div>
+        <div class="how-step-title">Learn & Earn Certificate</div>
+        <div class="how-step-desc">Access your course forever. Complete assignments, attend live classes, and earn a verified digital certificate.</div>
+      </div>
+    </div>
+
+    <div id="teacher-steps" class="how-grid" style="display:none">
+      <div class="how-step">
+        <div class="how-step-num">1</div>
+        <div class="how-step-icon">📝</div>
+        <div class="how-step-title">Register as Instructor</div>
+        <div class="how-step-desc">Sign up, verify your identity, and complete your instructor profile. Our team reviews and approves within 24 hours.</div>
+      </div>
+      <div class="how-step">
+        <div class="how-step-num">2</div>
+        <div class="how-step-icon">🎬</div>
+        <div class="how-step-title">Create Your Course</div>
+        <div class="how-step-desc">Upload video lessons, PDFs, quizzes, and assignments using our simple course builder. Or schedule live Zoom classes.</div>
+      </div>
+      <div class="how-step">
+        <div class="how-step-num">3</div>
+        <div class="how-step-icon">💰</div>
+        <div class="how-step-title">Earn Monthly Payouts</div>
+        <div class="how-step-desc">Earn up to 70% of course revenue. Payouts processed every month directly to your Sri Lankan bank account.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEACH WITH US -->
+<section class="teach-section" id="teach">
+  <div class="section-inner">
+    <div class="teach-grid">
+      <div>
+        <p class="section-label">Become an Instructor</p>
+        <h2 class="section-title">Turn Your Knowledge Into Income</h2>
+        <p class="section-desc" style="margin-bottom:2rem;">Whether you're a teacher, professional, or expert — share what you know with thousands of Sri Lankan learners and earn a steady income.</p>
+        <div class="teach-benefits">
+          <div class="teach-benefit">
+            <div class="benefit-icon">💰</div>
+            <div>
+              <div class="benefit-title">Earn up to 70% Revenue Share</div>
+              <div class="benefit-desc">Keep the majority of your course sales. Our competitive revenue split means more money in your pocket every month.</div>
+            </div>
+          </div>
+          <div class="teach-benefit">
+            <div class="benefit-icon">🎟️</div>
+            <div>
+              <div class="benefit-title">Sell Monthly Live Class Tickets</div>
+              <div class="benefit-desc">Schedule Zoom or MS Teams classes and sell monthly access tickets. Recurring revenue every month from your loyal students.</div>
+            </div>
+          </div>
+          <div class="teach-benefit">
+            <div class="benefit-icon">🇱🇰</div>
+            <div>
+              <div class="benefit-title">Teach in Your Language</div>
+              <div class="benefit-desc">Create courses in Sinhala, Tamil, or English. Reach the widest possible Sri Lankan audience on a platform built for you.</div>
+            </div>
+          </div>
+          <div class="teach-benefit">
+            <div class="benefit-icon">📊</div>
+            <div>
+              <div class="benefit-title">Real-Time Analytics Dashboard</div>
+              <div class="benefit-desc">Track enrollments, watch time, student progress, and monthly earnings in one simple dashboard.</div>
+            </div>
+          </div>
+        </div>
+        <a href="#" class="btn-hero btn-hero-primary" style="display:inline-block; margin-top:2rem; padding:0.85rem 2rem">Start Teaching Today →</a>
+      </div>
+
+      <div>
+        <div class="teach-visual">
+          <div style="font-size:0.85rem; font-weight:600; color:var(--ink); margin-bottom:1rem">📊 Instructor Dashboard Preview</div>
+          <div class="earnings-preview">
+            <div class="earnings-label">This Month's Earnings</div>
+            <div class="earnings-amount">LKR 82,400 <small>/ month</small></div>
+            <div class="earnings-bar">
+              <div class="bar-track"><div class="bar-fill" style="width:78%"></div></div>
+              <div class="bar-label"><span>Goal: LKR 100,000</span><span>78%</span></div>
+            </div>
+          </div>
+          <div class="revenue-breakdown">
+            <div class="rev-item">
+              <div class="rev-num">LKR 54,200</div>
+              <div class="rev-label">Course Sales</div>
+            </div>
+            <div class="rev-item">
+              <div class="rev-num">LKR 28,200</div>
+              <div class="rev-label">Live Ticket Sales</div>
+            </div>
+            <div class="rev-item">
+              <div class="rev-num">1,248</div>
+              <div class="rev-label">Total Students</div>
+            </div>
+            <div class="rev-item">
+              <div class="rev-num" style="color:var(--amber-dark)">4.9 ★</div>
+              <div class="rev-label">Avg. Rating</div>
+            </div>
+          </div>
+          <button class="btn-teach">🚀 Become an Instructor — Free</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials-section">
+  <div class="section-inner">
+    <p class="section-label">Success Stories</p>
+    <h2 class="section-title">What Our Community Says</h2>
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <div class="t-stars">★★★★★</div>
+        <div class="t-text">"Edume changed my life. I learned Python in Sinhala and landed a job at a top IT company in Colombo in just 6 months. The course content is excellent and very affordable."</div>
+        <div class="t-author">
+          <div class="t-avatar" style="background:var(--teal)">DN</div>
+          <div>
+            <div class="t-name">Dinesh Nissanka</div>
+            <div class="t-role">Software Developer, Colombo</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="t-stars">★★★★★</div>
+        <div class="t-text">"As a teacher, Edume gave me the platform to reach over 1,000 students island-wide. The monthly ticket system for my live Maths classes is a game changer for my income."</div>
+        <div class="t-author">
+          <div class="t-avatar" style="background:var(--amber-dark)">SR</div>
+          <div>
+            <div class="t-name">Samanthi Rathnayake</div>
+            <div class="t-role">Mathematics Instructor, Kandy</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="t-stars">★★★★★</div>
+        <div class="t-text">"The Tamil-medium courses are incredible. I studied Digital Marketing from Jaffna and now run my own agency. Edume truly understands the Sri Lankan student's needs."</div>
+        <div class="t-author">
+          <div class="t-avatar" style="background:#185FA5">PK</div>
+          <div>
+            <div class="t-name">Priya Karthigeyan</div>
+            <div class="t-role">Digital Marketing Agency, Jaffna</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section" id="pricing">
+  <div class="section-inner">
+    <p class="section-label">Simple Pricing</p>
+    <h2 class="section-title">Plans for Every Learner</h2>
+    <p class="section-desc">Whether you want a single course or unlimited access, we have a plan that fits.</p>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="p-icon">📚</div>
+        <div class="p-name">Single Course</div>
+        <div class="p-price">LKR <span style="font-size:1rem;">from</span> 990</div>
+        <div class="p-period">one-time purchase</div>
+        <ul class="p-features">
+          <li>Lifetime course access</li>
+          <li>Downloadable resources</li>
+          <li>Certificate of completion</li>
+          <li>Mobile & desktop access</li>
+        </ul>
+        <button class="btn-plan btn-plan-outline">Browse Courses</button>
+      </div>
+
+      <div class="pricing-card featured">
+        <div class="featured-badge">⭐ Most Popular</div>
+        <div class="p-icon">🚀</div>
+        <div class="p-name">All-Access Pass</div>
+        <div class="p-price">LKR <span>1,499</span></div>
+        <div class="p-period">per month · cancel anytime</div>
+        <ul class="p-features">
+          <li>Unlimited access to all 1,200+ courses</li>
+          <li>Priority support & mentorship</li>
+          <li>All certificates included</li>
+          <li>Exclusive monthly workshops</li>
+          <li>Offline downloads</li>
+        </ul>
+        <button class="btn-plan btn-plan-filled">Get All-Access →</button>
+      </div>
+
+      <div class="pricing-card">
+        <div class="p-icon">🎟️</div>
+        <div class="p-name">Live Class Ticket</div>
+        <div class="p-price">LKR <span style="font-size:1rem;">from</span> 800</div>
+        <div class="p-period">per month per class</div>
+        <ul class="p-features">
+          <li>Attend live Zoom / MS Teams sessions</li>
+          <li>Ask questions in real-time</li>
+          <li>Access to recorded replays</li>
+          <li>Direct chat with instructor</li>
+        </ul>
+        <button class="btn-plan btn-plan-outline">Browse Live Classes</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div style="position:relative;z-index:1">
+    <p class="section-label" style="color:var(--teal-light); text-align:center">Join Edume Today</p>
+    <h2 class="section-title" style="text-align:center; margin-bottom:1rem">Your Future Starts<br>With One Click</h2>
+    <p class="cta-desc">Join 25,000+ Sri Lankan learners and hundreds of expert instructors already building their futures on Edume Learning.</p>
+    <div class="cta-btns">
+      <a href="#" class="btn-cta-primary">Start Learning — It's Free</a>
+      <a href="#" class="btn-cta-outline">Become an Instructor</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#" class="footer-logo">
+          <div class="nav-logo-icon" style="width:32px;height:32px;font-size:1rem">E</div>
+          Edume Learning
+        </a>
+        <p class="footer-desc">Sri Lanka's leading online education platform. Connecting learners and teachers across the island in Sinhala, Tamil, and English.</p>
+        <div class="footer-payments">
+          <span class="payment-badge">Visa</span>
+          <span class="payment-badge">Mastercard</span>
+          <span class="payment-badge">Dialog Pay</span>
+          <span class="payment-badge">Bank Transfer</span>
+          <span class="payment-badge">Mobitel Pay</span>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Learn</h4>
+        <ul>
+          <li><a href="#">Browse Courses</a></li>
+          <li><a href="#">Live Classes</a></li>
+          <li><a href="#">Free Courses</a></li>
+          <li><a href="#">Certifications</a></li>
+          <li><a href="#">A/L Resources</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Teach</h4>
+        <ul>
+          <li><a href="#">Become Instructor</a></li>
+          <li><a href="#">Instructor FAQ</a></li>
+          <li><a href="#">Pricing & Revenue</a></li>
+          <li><a href="#">Course Builder</a></li>
+          <li><a href="#">Live Class Setup</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Edume Learning (Pvt) Ltd. Registered in Sri Lanka 🇱🇰</p>
+      <div class="footer-langs">
+        <button class="lang-btn active">English</button>
+        <button class="lang-btn">සිංහල</button>
+        <button class="lang-btn">தமிழ்</button>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function switchTab(btn, type) {
+    document.querySelectorAll('.how-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('learner-steps').style.display = type === 'learner' ? 'grid' : 'none';
+    document.getElementById('teacher-steps').style.display = type === 'teacher' ? 'grid' : 'none';
+  }
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 100);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
